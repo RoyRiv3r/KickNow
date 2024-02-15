@@ -7,7 +7,7 @@
   <a href="https://addons.mozilla.org/en-GB/firefox/addon/kick-now/">
   <img src="https://img.shields.io/amo/v/kick-now?label=Download%20Firefox&logo=Firefox-Browser&style=for-the-badge" alt="Get Kick Now for Firefox"></a>
   <br>
-  <a href="https://github.com/RoyRiv3r/KickNow/releases/latest"><img src="https://img.shields.io/github/downloads/RoyRiv3r/KickNow/latest/Kick-now-1.6.chromium.zip?style=for-the-badge&logo=GoogleChrome&label=DOWNLOAD%20CHROMIUM&color=blue" alt="Get Kick Now for Chrome"></a>
+  <a href="https://github.com/RoyRiv3r/KickNow/releases/latest"><img src="https://img.shields.io/github/downloads/RoyRiv3r/KickNow/latest/Kick-now-1.7.chromium.zip?style=for-the-badge&logo=GoogleChrome&label=DOWNLOAD%20CHROMIUM&color=blue" alt="Get Kick Now for Chrome"></a>
  <p align="center"><b>⚠️ Fair warning </b> for Chromium users, the extension will not auto-update. Please check the repo for updates regularly.
 </p>
 </p>
