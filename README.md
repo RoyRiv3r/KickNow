@@ -14,14 +14,14 @@
 
 
 
-### Firefox
-
 Kick Now is available on the Firefox Add-ons store. Simply click the link above to install it.
 
-<p>
-    <center><img src="https://addons.mozilla.org/user-media/previews/full/295/295399.png?modified=1707292072">
-<img src="https://addons.mozilla.org/user-media/previews/full/295/295400.png?modified=1707292075"></center>
-</p>
+# Screenshots 
+
+|   |   |   |
+|:-------------------------:|:-------------------------:|:-------------------------:|
+| ![image1](https://github.com/RoyRiv3r/KickNow/assets/41067116/0bdb6db9-8fda-440d-afa3-4ea9ce83e0bc) | ![image2](https://github.com/RoyRiv3r/KickNow/assets/41067116/4e98f0af-f2fa-4eae-a332-a013e85caffb)<br>![image4](https://github.com/RoyRiv3r/KickNow/assets/41067116/cba181a8-9fff-4e9c-9606-d59285a6876f) | ![image3](https://github.com/RoyRiv3r/KickNow/assets/41067116/17f7811f-93d0-4fe8-91ce-158cad720f85) |
+
 
 ## Support
 
