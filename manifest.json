@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "Kick Now",
+  "author": "RoyRiver",
+  "version": "2.4",
+  "description": "Notifies user when streamers are live on Kick.com.",
+  "icons": {
+    "48": "icon.png"
+  },
+  "permissions": [
+    "notifications",
+    "storage",
+    "alarms",
+    "https://kick.com/",
+    "https://files.kick.com/*",
+    "https://ko-fi.com/*"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"]
+    }
+  ]
+}
