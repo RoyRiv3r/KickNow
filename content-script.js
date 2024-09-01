@@ -1,3 +1,44 @@
+// Constants for styling
+const BUTTON_STYLES = {
+  backgroundColor: "#53fc18",
+  color: "black",
+  border: "none",
+  padding: ".300rem .25rem",
+  textAlign: "center",
+  textDecoration: "none",
+  fontSize: ".750rem",
+  lineHeight: "1.25",
+  margin: "2px 1px",
+  cursor: "pointer",
+  borderRadius: "5px",
+  display: "flex",
+  alignItems: "center",
+  fontWeight: "600",
+  fontFamily: "inherit",
+  transition: "background-color 0.3s, transform 0.3s",
+};
+
+const ADD_ALL_BUTTON_STYLES = {
+  ...BUTTON_STYLES,
+  padding: ".600rem .25rem",
+  fontSize: ".850rem",
+};
+
+// Helper function to apply styles
+function applyStyles(element, styles) {
+  Object.assign(element.style, styles);
+}
+
+// Helper function to create a button
+function createButton(text, className, styles) {
+  const button = document.createElement("button");
+  button.textContent = text;
+  button.className = className;
+  applyStyles(button, styles);
+  return button;
+}
+
+// Function to add button to streamer usernames
 function addButtonToStreamerUsernames() {
   const actionButtons = document.querySelectorAll(
     ".stream-username > span:nth-child(1)"
@@ -7,154 +48,129 @@ function addButtonToStreamerUsernames() {
       !actionButton.nextElementSibling ||
       actionButton.nextElementSibling.className !== "streamer-button"
     ) {
-      const button = document.createElement("button");
-      button.className = "streamer-button";
-
-      button.style.backgroundColor = "#53fc18";
-      button.style.color = "black";
-      button.style.border = "none";
-      button.style.padding = ".300rem .25rem";
-      button.style.textAlign = "center";
-      button.style.textDecoration = "none";
-      button.style.fontSize = ".750rem";
-      button.style.lineHeight = "1.25";
-      button.style.margin = "2px 1px";
-      button.style.cursor = "pointer";
-      button.style.borderRadius = "5px";
-      button.style.display = "flex";
-      button.style.alignItems = "center";
-      button.style.fontWeight = "600";
-      button.style.fontFamily = "inherit";
-      button.style.transition = "background-color 0.3s, transform 0.3s";
-
-      // const streamerName = actionButton.textContent.trim().toLowerCase();
       const url = window.location.href;
       const streamerName = url.split("/").pop();
 
+      const button = createButton("", "streamer-button", BUTTON_STYLES);
+
       browser.storage.local.get(streamerName).then((result) => {
-        if (result[streamerName]) {
-          button.textContent = "Remove Streamer";
-        } else {
-          button.textContent = "Add Streamer";
-        }
+        button.textContent = result[streamerName]
+          ? "Remove Streamer"
+          : "Add Streamer";
       });
 
-      button.addEventListener("click", function () {
-        if (button.textContent === "Add Streamer") {
-          button.textContent = "Remove Streamer";
-          browser.runtime.sendMessage({
-            type: "addStreamer",
-            content: streamerName,
-          });
-        } else {
-          button.textContent = "Add Streamer";
-          browser.runtime.sendMessage({
-            type: "removeStreamer",
-            content: streamerName,
-          });
-        }
-      });
-
+      button.addEventListener("click", () =>
+        handleStreamerButtonClick(button, streamerName)
+      );
       actionButton.parentNode.insertBefore(button, actionButton.nextSibling);
     }
   });
 }
 
-function createAddAllStreamersButton() {
+// Function to handle streamer button click
+function handleStreamerButtonClick(button, streamerName) {
+  const isAdding = button.textContent === "Add Streamer";
+  button.textContent = isAdding ? "Remove Streamer" : "Add Streamer";
+
+  browser.runtime.sendMessage({
+    type: isAdding ? "addStreamer" : "removeStreamer",
+    content: streamerName,
+  });
+}
+
+// Function to create or remove "Add All Streamers" button
+function updateAddAllStreamersButton() {
   const channelsElement = document.querySelector(
     'div[data-v-adccd6b9][class*="border-primary/100"]'
   );
-  if (channelsElement) {
-    const existingButton = document.querySelector(".add-all-streamers-button");
-    if (!existingButton) {
-      const addAllStreamersButton = document.createElement("button");
-      addAllStreamersButton.textContent = "Add All Streamers";
-      addAllStreamersButton.className = "add-all-streamers-button";
+  const streamerElements = document.querySelectorAll(
+    "div[data-v-3e774179] > a"
+  );
+  const existingButton = document.querySelector(".add-all-streamers-button");
 
-      addAllStreamersButton.style.backgroundColor = "#53fc18";
-      addAllStreamersButton.style.color = "black";
-      addAllStreamersButton.style.border = "none";
-      addAllStreamersButton.style.padding = ".600rem .25rem";
-      addAllStreamersButton.style.textAlign = "center";
-      addAllStreamersButton.style.textDecoration = "none";
-      addAllStreamersButton.style.fontSize = ".850rem";
-      addAllStreamersButton.style.lineHeight = "1.25";
-      addAllStreamersButton.style.margin = "2px 1px";
-      addAllStreamersButton.style.cursor = "pointer";
-      addAllStreamersButton.style.borderRadius = "5px";
-      addAllStreamersButton.style.display = "flex";
-      addAllStreamersButton.style.alignItems = "center";
-      addAllStreamersButton.style.fontWeight = "600";
-      addAllStreamersButton.style.fontFamily = "inherit";
-      addAllStreamersButton.style.transition =
-        "background-color 0.3s, transform 0.3s";
+  // Check if we're on the Channels tab
+  const isChannelsTab = channelsElement && streamerElements.length > 0;
 
-      addAllStreamersButton.addEventListener(
-        "click",
-        handleAddAllStreamersClick
-      );
-      channelsElement.parentNode.insertBefore(
-        addAllStreamersButton,
-        channelsElement.nextSibling
-      );
-    }
+  if (isChannelsTab && !existingButton) {
+    // Create and add the button if we're on the Channels tab and the button doesn't exist
+    const addAllStreamersButton = createButton(
+      "Add All Streamers",
+      "add-all-streamers-button",
+      ADD_ALL_BUTTON_STYLES
+    );
+    addAllStreamersButton.addEventListener("click", handleAddAllStreamersClick);
+    channelsElement.parentNode.insertBefore(
+      addAllStreamersButton,
+      channelsElement.nextSibling
+    );
+  } else if (!isChannelsTab && existingButton) {
+    // Remove the button if we're not on the Channels tab and the button exists
+    existingButton.remove();
   }
 }
+
+// Function to handle "Add All Streamers" button click
 function handleAddAllStreamersClick() {
   const streamerElements = document.querySelectorAll(
     "div[data-v-3e774179] > a"
   );
+
+  if (streamerElements.length === 0) {
+    showNotification(
+      "No streamers found. Please make sure you're on the Channels tab."
+    );
+    return;
+  }
+
   const streamerNames = Array.from(streamerElements).map((element) =>
     element.getAttribute("href").slice(1)
   );
 
-  const promises = streamerNames.map((streamerName) => {
-    return browser.runtime.sendMessage({
-      type: "addStreamer",
-      content: streamerName,
-    });
-  });
-
-  Promise.all(promises)
+  Promise.all(
+    streamerNames.map((streamerName) =>
+      browser.runtime.sendMessage({
+        type: "addStreamer",
+        content: streamerName,
+      })
+    )
+  )
     .then((responses) => {
-      const addedStreamers = responses.filter(
+      const addedCount = responses.filter(
         (response) => response.status === "success"
-      );
-      const alreadyAddedStreamers = responses.filter(
+      ).length;
+      const alreadyAddedCount = responses.filter(
         (response) => response.status === "alreadyAdded"
-      );
+      ).length;
 
-      if (addedStreamers.length > 0) {
-        showNotification("Streamers added!");
-      } else if (alreadyAddedStreamers.length === streamerNames.length) {
+      if (addedCount > 0) {
+        showNotification(`${addedCount} streamer(s) added!`);
+      } else if (alreadyAddedCount === streamerNames.length) {
+        showNotification("All streamers were already added.");
+      } else {
         showNotification(
-          "Something went wrong, try to refresh the page and make sure you are in Channels Tab."
+          "No new streamers added. Please refresh the page and ensure you're on the Channels tab."
         );
       }
     })
     .catch((error) => {
       console.error("Error adding streamers:", error);
+      showNotification("An error occurred while adding streamers.");
     });
 }
 
+// Function to show notification
 function showNotification(message) {
-  browser.runtime.sendMessage({
-    type: "showNotification",
-    content: message,
-  });
+  browser.runtime.sendMessage({ type: "showNotification", content: message });
 }
 
+// Initialize the script
 function init() {
-  createAddAllStreamersButton();
+  updateAddAllStreamersButton();
   addButtonToStreamerUsernames();
 
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === "childList") {
-        createAddAllStreamersButton();
-        addButtonToStreamerUsernames();
-      }
-    });
+  const observer = new MutationObserver(() => {
+    updateAddAllStreamersButton();
+    addButtonToStreamerUsernames();
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }

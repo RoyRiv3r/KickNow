@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Kick Now",
   "author": "RoyRiver",
-  "version": "2.4",
+  "version": "2.5",
   "description": "Notifies user when streamers are live on Kick.com.",
   "icons": {
     "48": "icon.png"
