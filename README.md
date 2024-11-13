@@ -35,6 +35,4 @@ Kick Now is available on the Firefox Add-ons store and Chromium based browser. S
 If you have any questions or need assistance, please open a new issue [here](https://github.com/RoyRiv3r/KickNow/issues/new).
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/royriver)
-![305261]()
-![305341]()
-![305262]()
+
